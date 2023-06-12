@@ -7,4 +7,15 @@ sudo dpkg --add-architecture i386
 sudo apt update
 sudo apt install wine32
 ```
-3. Test if **Wine** get successfully installed and doesn't have any error running this command: ```wine```
+3. Test if **Wine** get successfully installed and doesn't have any error running this command: `wine`
+
+## Run Windows app (.exe) with Wine
+1. First run `cd` in the directory, example: `cd C:\path\to\your\file`
+2. After do this run `wine yourFile.exe`
+3. And congratulations, if everything is right the program will start normally
+
+> Batch code:
+```bat
+cd C:\path\to\your\file
+wine yourFile.exe
+```
