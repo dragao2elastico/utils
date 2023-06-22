@@ -1,7 +1,7 @@
 ## Instalation
 1. Enable Linux/install terminal
 2. Run this command: 
-```bat
+```js
 sudo apt install wine
 sudo dpkg --add-architecture i386
 sudo apt update
