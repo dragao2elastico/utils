@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pop-up</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111; /* Cor de fundo escura (tema escuro) */
+            color: #fff; /* Cor do texto */
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .welcome-button {
+            background-color: #333; /* Cor de fundo do botão */
+            color: #fff; /* Cor do texto do botão */
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-radius 0.3s ease; /* Animação de hover */
+            border-radius: 1vh;
+        }
+
+        .welcome-button:hover {
+            transition-duration: 0.5s;
+            background-color: #555; /* Cor de fundo mais escura no hover */
+            border-radius: 2vh;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pop-up de Boas-Vindas</h1>
+    <button id="welcomeButton" class="welcome-button">Clique aqui</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const welcomeButton = document.getElementById("welcomeButton");
+
+            welcomeButton.addEventListener("click", () => {
+                Swal.fire({
+                    title: 'Por favor, insira seu nome',
+                    input: 'text',
+                    inputAttributes: {
+                        autocapitalize: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'Enviar',
+                    cancelButtonText: 'Cancelar',
+                    showLoaderOnConfirm: true,
+                    preConfirm: (userName) => {
+                        return new Promise((resolve) => {
+                            setTimeout(() => {
+                                if (!userName) {
+                                    Swal.showValidationMessage('Por favor, insira seu nome');
+                                } else {
+                                    resolve(userName);
+                                }
+                            }, 1000);
+                        });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: `Bem-vindo, ${result.value}`,
+                            text: "Este é um site de exemplo com um pop-up de boas-vindas.",
+                            icon: "success",
+                            confirmButtonText: "Fechar",
+                            background: "#333", // Cor de fundo escura (tema escuro)
+                            customClass: {
+                                confirmButton: "popup-button",
+                            },
+                        });
+                    }
+                });
+            });
+
+            welcomeButton.addEventListener("mouseover", () => {
+                welcomeButton.style.backgroundColor = "#555"; // Cor de fundo mais escura no hover
+                welcomeButton.style.borderRadius = "2vh"; // Border-radius maior no hover
+            });
+
+            welcomeButton.addEventListener("mouseout", () => {
+                welcomeButton.style.backgroundColor = "#333"; // Retorna à cor de fundo escura após o hover
+                welcomeButton.style.borderRadius = "1vh"; // Border-radius original após o hover
+            });
+        });
+    </script>
+</body>
+</html>
