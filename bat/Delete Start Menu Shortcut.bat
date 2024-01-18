@@ -11,7 +11,6 @@ if %errorLevel% neq 0 (
     exit /b
 )
 
-:: Make sure
 whether a file was dragged into the script
 if "%1"=="" (
     echo Drag a file into this script to delete the Start Menu shortcut.
@@ -19,12 +18,9 @@ if "%1"=="" (
     exit /b
 )
 
-:: Get the filename without extension (will be used to delete the shortcut)
 set "filename=%~n1"
 
-:: Delete the Start Menu shortcut
-echo Deleting Start Menu shortcut
-...
+echo Deleting Start Menu shortcut...
 del "%APPDATA%\Microsoft\Windows\Start Menu\Programs\%Filename%.lnk" /q
 
 echo Shortcut successfully deleted from Start Menu.
