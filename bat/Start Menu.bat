@@ -1,24 +1,26 @@
 @echo off
-setlocal enabledelayedexpansion
+chcp 65001
+color a
+setlocal
 
 if "%1"=="" (
-    echo Drag a file to create a shortcut in the Start Menu.
+    echo Drag a file into this script to create a Start Menu shortcut.
     pause
-    exit
+    exit /b
 )
 
-set "TargetFile=%~1"
-for %%F in ("%TargetFile%") do set "FileName=%%~NF"
-set "FileNameWithoutExtension=!FileName:~0,-4!"
+set "file=%~1"
 
-set "ShortcutName=!FileNameWithoutExtension!"
+set "tempFile=%TEMP%\temp.lnk"
 
-set "ShortcutPath=%APPDATA%\Microsoft\Windows\Start Menu\Programs\%ShortcutName%.lnk"
+echo Creating temporary shortcut...
+powershell -Command "$WshShell = New-Object -ComObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut('%tempFile%'); $Shortcut.TargetPath = '%file%'; $Shortcut.Save()"
 
-echo [InternetShortcut] > "%ShortcutPath%"
-echo URL=file:///%TargetFile% >> "%ShortcutPath%"
-echo IconFile=%TargetFile% >> "%ShortcutPath%"
-echo IconIndex=0 >> "%ShortcutPath%"
+echo Modifying the shortcut...
+powershell -Command "$bytes = [System.IO.File]::ReadAllBytes('%tempFile%'); $bytes[0x15] = $bytes[0x15] -bor 0x20; [System.IO.File]::WriteAllBytes ('%tempFile%', $bytes)"
 
-echo Shortcut successfully created for "!FileNameWithoutExtension!"!
+echo Moving shortcut to Start Menu...
+move "%tempFile%" "%APPDATA%\Microsoft\Windows\Start Menu\Programs\%~n1.lnk"
+
+echo Shortcut successfully created in the Start Menu.
 pause
